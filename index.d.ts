@@ -7,7 +7,7 @@ export declare type SharpBuffer = Buffer;
 export declare type ImageType = "png" | "bmp";
 
 /**
- * Data of the `inputOptions`
+ * ICO data
  * @param width - width of the image, maximum of 256
  * @param height - height of the image, maximum of 256
  * @param colors - number of colors
