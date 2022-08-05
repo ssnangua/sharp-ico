@@ -12,7 +12,7 @@ npm install sharp-ico
 
 ### Create instances of sharp from an ICO image
 
-`ico.sharpsFromIco(input, options?, resolveWithObject?)`
+#### `ico.sharpsFromIco(input, options?, resolveWithObject?)`
 
 - `input` (string | Buffer) - A String containing the filesystem path to an ICO image file, or a Buffer containing ICO image data.
 - `options` Object (optional) - sharp constructor [options](https://sharp.pixelplumbing.com/api-constructor#parameters).
@@ -45,7 +45,7 @@ ico
 
 ### Write an ICO file
 
-`ico.sharpsToIco(icons, fileOut, options?)`
+#### `ico.sharpsToIco(icons, fileOut, options?)`
 
 - `icons` Sharp[] - An array of instance of sharp.
 - `fileOut` string - The path to write the image data to.
@@ -94,11 +94,11 @@ ico
 
 ### Decode ICO
 
-`ico.decode(buffer)`
+#### `ico.decode(buffer)`
 
 - `buffer` Buffer - A Buffer containing ICO image data.
 
-Returns `Object` - Return an Object contains the following decoding info:
+Returns `Object[]` - Return an array of Object contains the following decoding info:
 
 - `width` number - width of the image, maximum of `256`.
 - `height` number - height of the image, maximum of `256`.
@@ -134,9 +134,9 @@ icons.forEach((icon) => {
 
 ### Encode ICO
 
-`ico.encode(bufferList)`
+#### `ico.encode(bufferList)`
 
-- bufferList Buffer[] - An array of Buffer containing PNG or BMP image data.
+- `bufferList` Buffer[] - An array of Buffer containing PNG or BMP image data.
 
 Returns `Buffer` - Return a buffer containing ICO image data.
 
