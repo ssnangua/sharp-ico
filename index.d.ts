@@ -1,4 +1,4 @@
-import { Sharp, SharpOptions } from "sharp";
+import { ResizeOptions, Sharp, SharpOptions } from "sharp";
 import { ImageData as BmpData } from "sharp-bmp";
 
 export declare type IcoBuffer = Buffer;
@@ -7,7 +7,7 @@ export declare type SharpBuffer = Buffer;
 export declare type ImageType = "png" | "bmp";
 
 /**
- * ICO data
+ * ICO icon data
  * @param width - width of the image, maximum of 256
  * @param height - height of the image, maximum of 256
  * @param colors - number of colors
@@ -17,10 +17,10 @@ export declare type ImageType = "png" | "bmp";
  * @param verticalHotspot - vertical hotspot of a CUR image
  * @param imageSize - (interal) size of imageData's buffer
  * @param imageOffset - (interal) offset start of the image data
- * @param imageType - 'png' or 'bmp'
- * @param imageData - image data of the icon
+ * @param imageType - "png" or "bmp"
+ * @param imageData - original image data of the icon
  * @param data - sharp image data
- * @param bmpData - if imageType is 'bmp', will contains the bmp data
+ * @param bmpData - if imageType is "bmp", will contains the bmp image data
  * @param image - instance of sharp
  * @public
  */
@@ -47,6 +47,11 @@ export declare interface OutputInfo {
   size: number;
 }
 
+export declare interface IcoOptions {
+  sizes: number[] | "default";
+  resizeOptions: ResizeOptions;
+}
+
 /**
  * Decode ICO
  */
@@ -71,5 +76,6 @@ export declare function sharpsFromIco(
  */
 export declare function sharpsToIco(
   icons: Sharp[],
-  fileOut: string
+  fileOut: string,
+  options?: IcoOptions
 ): Promise<OutputInfo>;

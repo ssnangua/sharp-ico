@@ -12,6 +12,14 @@ npm install sharp-ico
 
 ### Create instances of sharp from an ICO image
 
+`ico.sharpsFromIco(input, options?, resolveWithObject?)`
+
+- `input` (string | Buffer) - A String containing the filesystem path to an ICO image file, or a Buffer containing ICO image data.
+- `options` Object (optional) - sharp constructor [options](https://sharp.pixelplumbing.com/api-constructor#parameters).
+- `resolveWithObject` boolean (optional) - Resolve the Promise with an array of Object containing `image` (instance of sharp) properties and decoding info instead of resolving only with instance of sharp. Default by `false`.
+
+Returns `Promise<Sharp[] | ImageData[]>` - Resolve with an array of instances of sharp or an Object containing `image` (instance of sharp) properties and decoding info.
+
 ```js
 const ico = require("sharp-ico");
 
@@ -27,7 +35,7 @@ ico
     icon.toFile(`output-${metadata.width}x${metadata.height}.png`);
   });
 
-// Set the third option to `true`, will return an object with decoding info
+// Set the third option to `true`, will return objects with decoding info
 ico
   .sharpsFromIco("input.ico", null, true)
   .forEach((icon) => {
@@ -36,6 +44,16 @@ ico
 ```
 
 ### Write an ICO file
+
+`ico.sharpsToIco(icons, fileOut, options?)`
+
+- `icons` Sharp[] - An array of instance of sharp.
+- `fileOut` string - The path to write the image data to.
+- `options` Object (optional)
+  - `sizes` (number[] | `"default"`) - Array of sizes to use when resizing. `"default"` equal to `[256, 128, 64, 48, 32, 24, 16]`.
+  - `resizeOptions` Object (optional) - sharp resize [options](https://sharp.pixelplumbing.com/api-resize#parameters).
+
+Returns `Promise<Object>` - Resolve with an Object containing `size`, `width`, `height` properties.
 
 ```js
 const sharp = require("sharp");
@@ -48,7 +66,7 @@ ico
       sharp("input-256x256.png"),
       bmp.sharpFromBmp("input-64x64.bmp"),
       sharp("input-32x32.png"),
-      // more size...
+      // more sizes...
     ],
     "output.ico"
   )
@@ -58,9 +76,38 @@ ico
   .catch((err) => {
     console.error(err);
   });
+
+// sizes options
+ico
+  .sharpsToIco(
+    [
+      sharp("input-256x256.png")
+    ],
+    "output.ico",
+    {
+      sizes: [64, 32, 24],
+      // sizes: "default", // equal to [256, 128, 64, 48, 32, 24, 16]
+      resizeOptions: {}, // sharp resize optinos
+    }
+  ); // will output a 64x64 ico image (with 32x32 and 24x24 sizes)
 ```
 
 ### Decode ICO
+
+`ico.decode(buffer)`
+
+- `buffer` Buffer - A Buffer containing ICO image data.
+
+Returns `Object` - Return an Object contains the following decoding info:
+
+- `width` number - width of the image, maximum of `256`.
+- `height` number - height of the image, maximum of `256`.
+- `imageSize` number - (interal) size of imageData's buffer.
+- `imageType` string - `"png"` or `"bmp"`.
+- `imageData` Buffer - Original image data of the icon.
+- `data` Buffer - sharp image data.
+- `bmpData` Object - If `imageType` is `"bmp"`, will contains the bmp image data.
+- ... (See `index.d.ts` for more detail.)
 
 ```js
 const fs = require("fs");
@@ -87,6 +134,12 @@ icons.forEach((icon) => {
 
 ### Encode ICO
 
+`ico.encode(bufferList)`
+
+- bufferList Buffer[] - An array of Buffer containing PNG or BMP image data.
+
+Returns `Buffer` - Return a buffer containing ICO image data.
+
 ```js
 const fs = require("fs");
 const sharp = require("sharp");
@@ -110,3 +163,9 @@ const bmp = require("sharp-bmp"); // if need to write bmp icons
   console.log(icoBuffer.length); // size of output.ico
 })();
 ```
+
+## Change Log
+
+### 0.1.1
+
+- `sharpsToIco` support `sizes` option

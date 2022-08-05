@@ -42,6 +42,26 @@ if (!fs.existsSync("./out")) fs.mkdirSync("./out");
 //   });
 
 /**
+ * resize
+ */
+// ico
+//   .sharpsToIco([sharp("input-256x256.png")], "out/output.ico", {
+//     // sizes: [64, 32, 24],
+//     // sizes: "default",
+//     resizeOptions: {},
+//   })
+//   .then((info) => {
+//     console.log(info);
+//   })
+//   .catch((err) => {
+//     console.error(err);
+//   });
+
+/**
+ *
+ */
+
+/**
  * Decode ICO
  */
 // const buffer = fs.readFileSync("input.ico");

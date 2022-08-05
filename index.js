@@ -39,16 +39,47 @@ function sharpsFromIco(input, options, resolveWithObject = false) {
   });
 }
 
-async function sharpsToIco(imageList, fileOut) {
-  const bufferList = [];
-  for (let i = 0; i < imageList.length; i++) {
-    const buffer = await imageList[i]
-      .toFormat("png")
-      .toBuffer({ resolveWithObject: true });
-    bufferList.push(buffer);
+async function resize(imageList, { sizes, resizeOptions }) {
+  if (sizes === "default") sizes = [256, 128, 64, 48, 32, 24, 16];
+  else if (!Array.isArray(sizes)) {
+    return Promise.reject("sizes must be an array of number");
   }
+  const resizedList = [];
+  const sizeMap = {};
+  const imageSizes = [];
+  await Promise.all(
+    imageList.map((image) => {
+      return image.metadata().then(({ width }) => {
+        sizeMap[width] = image;
+        imageSizes.push(width);
+      });
+    })
+  );
+  imageSizes.sort((a, b) => a - b);
+  sizes.forEach((size) => {
+    const closestSize =
+      imageSizes.find((v) => v > size) || imageSizes[imageSizes.length - 1];
+    const image = sizeMap[closestSize].clone().resize({
+      fit: "contain",
+      background: { r: 0, g: 0, b: 0, alpha: 0 },
+      ...resizeOptions,
+      width: size,
+      height: size,
+    });
+    resizedList.push(image);
+  });
+  return resizedList;
+}
+
+async function sharpsToIco(imageList, fileOut, options) {
+  if (options) imageList = await resize(imageList, options);
+  const bufferList = await Promise.all(
+    imageList.map((image) => {
+      return image.toFormat("png").toBuffer({ resolveWithObject: true });
+    })
+  );
   try {
-    const icoBuffer = ico.encode(bufferList.map((buffer) => buffer.data));
+    const icoBuffer = encode(bufferList.map((buffer) => buffer.data));
     fs.writeFileSync(fileOut, icoBuffer);
     return {
       width: Math.max(...bufferList.map((buffer) => buffer.info.width)),
