@@ -16,9 +16,9 @@ npm install sharp-ico
 
 - `input` (string | Buffer) - A String containing the filesystem path to an ICO image file, or a Buffer containing ICO image data.
 - `options` Object (optional) - sharp constructor [options](https://sharp.pixelplumbing.com/api-constructor#parameters).
-- `resolveWithObject` boolean (optional) - Resolve the Promise with an array of Object containing `image` (instance of sharp) properties and decoding info instead of resolving only with instance of sharp. Default by `false`.
+- `resolveWithObject` boolean (optional) - Return an array of Object containing `image` (instance of sharp) properties and decoding info instead of only instance of sharp. Default by `false`.
 
-Returns `Promise<Sharp[] | ImageData[]>` - Resolve with an array of instances of sharp or an Object containing `image` (instance of sharp) properties and decoding info.
+Returns `Sharp[] | ImageData[]` - Return an array of instances of sharp or Object containing `image` (instance of sharp) properties and decoding info.
 
 ```js
 const ico = require("sharp-ico");

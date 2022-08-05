@@ -1,6 +1,6 @@
 {
   "name": "sharp-ico",
-  "version": "0.1.2",
+  "version": "0.1.3",
   "description": "ICO encoder and decoder for sharp base on ico-endec.",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
