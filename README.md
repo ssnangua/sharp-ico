@@ -16,9 +16,9 @@ npm install sharp-ico
 
 - `input` (string | Buffer) - A String containing the filesystem path to an ICO image file, or a Buffer containing ICO image data.
 - `options` Object (optional) - sharp constructor [options](https://sharp.pixelplumbing.com/api-constructor#parameters).
-- `resolveWithObject` boolean (optional) - Return an array of Object containing `image` (instance of sharp) properties and decoding info instead of only instance of sharp. Default by `false`.
+- `resolveWithObject` boolean (optional) - Return an array of Object containing `image` (instance of sharp) property and [decoding info](#decodinginfo) instead of only instance of sharp. Default by `false`.
 
-Returns `Sharp[] | ImageData[]` - Return an array of instances of sharp or Object containing `image` (instance of sharp) properties and decoding info.
+Returns `Sharp[] | ImageData[]` - Return an array of instance of sharp or Object containing `image` (instance of sharp) property and [decoding info](#decodinginfo).
 
 ```js
 const ico = require("sharp-ico");
@@ -98,7 +98,7 @@ ico
 
 - `buffer` Buffer - A Buffer containing ICO image data.
 
-Returns `Object[]` - Return an array of Object contains the following decoding info:
+Returns `Object[]` - Return an array of Object contains the following <span id="decodinginfo">decoding info</span>:
 
 - `width` number - width of the image, maximum of `256`.
 - `height` number - height of the image, maximum of `256`.
@@ -106,7 +106,7 @@ Returns `Object[]` - Return an array of Object contains the following decoding i
 - `imageType` string - `"png"` or `"bmp"`.
 - `imageData` Buffer - Original image data of the icon.
 - `data` Buffer - sharp image data.
-- `bmpData` Object - If `imageType` is `"bmp"`, will contains the bmp image data.
+- `bmpData` Object - If `imageType` is `"bmp"`, will contains the [bmp image data](https://github.com/shaozilee/bmp-js#decode-bmp).
 - ... (See `index.d.ts` for more detail.)
 
 ```js
