@@ -1,6 +1,6 @@
 # sharp-ico
 
-ICO encoder and decoder for [sharp](https://www.npmjs.com/package/sharp) base on [ico-endec](https://www.npmjs.com/package/ico-endec).
+ICO encoder and decoder for [sharp](https://www.npmjs.com/package/sharp) base on [ico-endec](https://www.npmjs.com/package/ico-endec) (for encode) and [decode-ico](https://www.npmjs.com/package/decode-ico) (for decode).
 
 ## Install
 
@@ -100,14 +100,14 @@ ico
 
 Returns `Object[]` - Return an array of Object contains the following <span id="decodinginfo">decoding info</span>:
 
-- `width` number - width of the image, maximum of `256`.
-- `height` number - height of the image, maximum of `256`.
-- `imageSize` number - (interal) size of imageData's buffer.
-- `imageType` string - `"png"` or `"bmp"`.
-- `imageData` Buffer - Original image data of the icon.
-- `data` Buffer - sharp image data.
-- `bmpData` Object - If `imageType` is `"bmp"`, will contains the [bmp image data](https://github.com/shaozilee/bmp-js#decode-bmp).
-- ... (See `index.d.ts` for more detail.)
+- `width` number - The width of the image, in pixels.
+- `height` number - The height of the image, in pixels.
+- `type` string - The type of image, will be one of `bmp` or `png`.
+- `data` Uint8Array - The data of the image, format depends on type, see below.
+- `bpp` number - The color depth of the image as the number of bits used per pixel.
+- `hotspot` null | { x: number, y: number } - If the image is a cursor (.cur), this is the hotspot.
+
+The format of the `data` parameter depends on the `type` of image. When the image is of type `bmp`, the data array will hold raw pixel data in the RGBA order, with integer values between 0 and 255 (included). When the type is `png`, the array will be png data.
 
 ```js
 const fs = require("fs");
@@ -118,17 +118,16 @@ const buffer = fs.readFileSync("input.ico");
 const icons = ico.decode(buffer);
 
 icons.forEach((icon) => {
-  if (icon.imageType === "png") {
-    sharp(icon.data).toFile(`output-${icon.width}x${icon.height}.png`);
-  } else { // icon.imageType === "bmp"
-    const image = sharp(icon.data, {
-      raw: {
-        width: icon.width,
-        height: icon.height,
-        channels: 4,
-      },
-    }).toFile(`output-${icon.width}x${icon.height}.jpg`);
-  }
+  const image = icon.type === "png"
+    ? sharp(icon.data)
+    : sharp(icon.data, {
+        raw: {
+          width: icon.width,
+          height: icon.height,
+          channels: 4,
+        },
+      });
+  image.toFile(`output-${icon.width}x${icon.height}.png`);
 });
 ```
 
@@ -169,3 +168,9 @@ const bmp = require("sharp-bmp"); // if need to write bmp icons
 ### 0.1.1
 
 - `sharpsToIco` support `sizes` option
+
+### 0.1.5
+
+- Use [decode-ico](https://www.npmjs.com/package/decode-ico) instead of [ico-endec](https://www.npmjs.com/package/ico-endec) for decoding to support transparent bmp icons.
+
+

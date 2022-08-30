@@ -1,31 +1,21 @@
 const fs = require("fs");
 const sharp = require("sharp");
-const ico = require("ico-endec");
-const bmp = require("sharp-bmp");
+const decodeIco = require("decode-ico");
+const icoEndec = require("ico-endec");
 
 function decode(buffer) {
-  return ico.decode(buffer).map((icon) => {
-    if (icon.imageType === "png") {
-      return Object.assign(icon, { data: icon.imageData });
-    } else {
-      const bmpData = bmp.decode(icon.imageData);
-      return Object.assign(icon, {
-        data: bmpData.data,
-        bmpData,
-      });
-    }
-  });
+  return decodeIco(buffer);
 }
 
 function encode(bufferList) {
-  return ico.encode(bufferList);
+  return icoEndec.encode(bufferList);
 }
 
 function sharpsFromIco(input, options, resolveWithObject = false) {
   const buffer = typeof input === "string" ? fs.readFileSync(input) : input;
-  return decode(buffer).map((icon) => {
+  return decodeIco(buffer).map((icon) => {
     const image =
-      icon.imageType === "png"
+      icon.type === "png"
         ? sharp(icon.data, options || {})
         : sharp(icon.data, {
             ...options,

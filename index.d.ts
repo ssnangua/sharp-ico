@@ -3,41 +3,30 @@ import { ImageData as BmpData } from "sharp-bmp";
 
 export declare type IcoBuffer = Buffer;
 export declare type PngOrBmpBuffer = Buffer;
-export declare type SharpBuffer = Buffer;
 export declare type ImageType = "png" | "bmp";
+
+export declare interface Hotspot {
+  x: number;
+  y: number;
+}
 
 /**
  * ICO icon data
- * @param width - width of the image, maximum of 256
- * @param height - height of the image, maximum of 256
- * @param colors - number of colors
- * @param colorPlanes - color planes of an ICO image
- * @param bitsPerPixel - bits per pixel of an ICO image
- * @param horizontalHotspot - horizontal hotspot of a CUR image
- * @param verticalHotspot - vertical hotspot of a CUR image
- * @param imageSize - (interal) size of imageData's buffer
- * @param imageOffset - (interal) offset start of the image data
- * @param imageType - "png" or "bmp"
- * @param imageData - original image data of the icon
- * @param data - sharp image data
- * @param bmpData - if imageType is "bmp", will contains the bmp image data
- * @param image - instance of sharp
+ * @param width - The width of the image, in pixels
+ * @param height - The height of the image, in pixels
+ * @param type - The type of image, will be one of `bmp` or `png`
+ * @param bpp - The color depth of the image as the number of bits used per pixel
+ * @param data - The data of the image, format depends on type
+ * @param hotspot - If the image is a cursor (.cur), this is the hotspot
  * @public
  */
 export declare interface ImageData {
   width: number;
   height: number;
-  colors: number;
-  colorPlanes: number;
-  bitsPerPixel: number;
-  horizontalHotspot: number;
-  verticalHotspot: number;
-  imageSize: number;
-  imageOffset: number;
-  imageType: ImageType;
-  imageData: PngOrBmpBuffer;
-  data: SharpBuffer;
-  bmpData?: BmpData;
+  type: ImageType;
+  bpp: number;
+  data: Uint8Array;
+  hotspot: null | Hotspot;
   image?: Sharp;
 }
 

@@ -1,7 +1,6 @@
 const fs = require("fs");
 const sharp = require("sharp");
 const ico = require("./index");
-const bmp = require("sharp-bmp");
 
 if (!fs.existsSync("./out")) fs.mkdirSync("./out");
 
@@ -9,7 +8,7 @@ if (!fs.existsSync("./out")) fs.mkdirSync("./out");
  * Create instances of sharp from an ICO image
  */
 // ico.sharpsFromIco("input.ico").forEach(async (icon, index) => {
-//   icon.toFile(`out/output-${index}.png`);
+//   // icon.toFile(`out/output-${index}.png`);
 //   const metadata = await icon.metadata();
 //   icon.toFile(`out/output-${metadata.width}x${metadata.height}.png`);
 // });
@@ -18,7 +17,7 @@ if (!fs.existsSync("./out")) fs.mkdirSync("./out");
  * Return an object with decoding info
  */
 // ico.sharpsFromIco("input.ico", null, true).forEach((icon) => {
-//   console.log(icon);
+//   // console.log(icon);
 //   icon.image.toFile(`out/output-${icon.width}x${icon.height}.png`);
 // });
 
@@ -29,7 +28,7 @@ if (!fs.existsSync("./out")) fs.mkdirSync("./out");
 //   .sharpsToIco(
 //     [
 //       sharp("input-256x256.png"),
-//       bmp.sharpFromBmp("input-64x64.bmp"),
+//       sharp("input-64x64.png"),
 //       sharp("input-32x32.png"),
 //     ],
 //     "out/output.ico"
@@ -47,7 +46,7 @@ if (!fs.existsSync("./out")) fs.mkdirSync("./out");
 // ico
 //   .sharpsToIco([sharp("input-256x256.png")], "out/output.ico", {
 //     // sizes: [64, 32, 24],
-//     // sizes: "default",
+//     sizes: "default",
 //     resizeOptions: {},
 //   })
 //   .then((info) => {
@@ -67,20 +66,17 @@ if (!fs.existsSync("./out")) fs.mkdirSync("./out");
 // const buffer = fs.readFileSync("input.ico");
 // const icons = ico.decode(buffer);
 // icons.forEach((icon) => {
-//   if (icon.imageType === "png") {
-//     sharp(icon.data).toFile(`out/output-${icon.width}x${icon.height}.png`);
-//   } else {
-//     // icon.imageType === "bmp"
-//     const image = sharp(icon.data, {
-//       raw: {
-//         width: icon.width,
-//         height: icon.height,
-//         channels: 4,
-//       },
-//     });
-//     image.toFile(`out/output-${icon.width}x${icon.height}.jpg`);
-//     bmp.sharpToBmp(image, `out/output-${icon.width}x${icon.height}.bmp`);
-//   }
+//   const image =
+//     icon.type === "png"
+//       ? sharp(icon.data)
+//       : sharp(icon.data, {
+//           raw: {
+//             width: icon.width,
+//             height: icon.height,
+//             channels: 4,
+//           },
+//         });
+//   image.toFile(`out/output-${icon.width}x${icon.height}.png`);
 // });
 
 /**
@@ -89,7 +85,7 @@ if (!fs.existsSync("./out")) fs.mkdirSync("./out");
 // (async () => {
 //   const icons = [
 //     sharp("input-256x256.png"),
-//     bmp.sharpFromBmp("input-64x64.bmp"),
+//     sharp("input-64x64.png"),
 //     sharp("input-32x32.png"),
 //   ];
 //   const bufferList = [];

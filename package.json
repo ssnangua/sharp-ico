@@ -1,6 +1,6 @@
 {
   "name": "sharp-ico",
-  "version": "0.1.4",
+  "version": "0.1.5",
   "description": "ICO encoder and decoder for sharp base on ico-endec.",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
@@ -32,8 +32,8 @@
     "@types/sharp": "^0.30.4"
   },
   "dependencies": {
-    "sharp": "*",
+    "decode-ico": "*",
     "ico-endec": "*",
-    "sharp-bmp": "^0.1.5"
+    "sharp": "*"
   }
 }
